@@ -1,0 +1,141 @@
+name: FieldFix CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, devops ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # ============================================================================
+  # 1. Code Quality & Syntax Hygiene
+  # ============================================================================
+  lint:
+    name: Code Hygiene & Syntax Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Linting Tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+
+      - name: Check Python Syntax & Undefined Names
+        run: |
+          # Stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=.venv,venv,build,dist
+
+  # ============================================================================
+  # 2. Secret Scanning & Security Gate
+  # ============================================================================
+  security-audit:
+    name: Secret & Credential Leak Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Verify .env is Git-Ignored
+        run: |
+          if git ls-files --error-unmatch .env 2>/dev/null; then
+            echo "SECURITY ERROR: .env file was tracked in git!"
+            exit 1
+          else
+            echo "PASS: .env is properly ignored and not tracked in git."
+          fi
+
+      - name: Scan for Accidental API Key Leaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+
+  # ============================================================================
+  # 3. Algorithmic Unit Test Suite
+  # ============================================================================
+  unit-tests:
+    name: Algorithmic Unit Tests (pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Application Dependencies & Pytest
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Run Algorithmic Unit Tests
+        run: |
+          pytest -v tests/ --junitxml=junit/test-results.xml
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results
+          path: junit/test-results.xml
+
+  # ============================================================================
+  # 4. RAG Quality Gate (LLMOps Regression Guardrail)
+  # ============================================================================
+  rag-regression-gate:
+    name: RAG Evaluation & Fact Recall Gate
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Dynamic Strategy Evaluation Gate
+        run: |
+          echo "Executing FieldFix Strategy Evaluation Harness..."
+          python evaluate.py --best_only
+
+  # ============================================================================
+  # 5. Docker Build Verification
+  # ============================================================================
+  docker-build:
+    name: Container Build Verification
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Container Image (No-Push Dry Run)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: fieldfix:ci-check
