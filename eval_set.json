@@ -1,0 +1,136 @@
+[
+  {
+    "id": "EVAL-01",
+    "category": "Incident Root Cause Analysis",
+    "question": "What caused the E-217 error across the DC-150 units at Pune Expressway, and what firmware change resolved it?",
+    "required_facts": [
+      "420 ms",
+      "v4.2.0",
+      "timing mismatch"
+    ],
+    "source_doc": "incident_postmortem.md / firmware_release_notes.md",
+    "explanation": "Firmware v4.3 reduced pre-charge timeout to 420 ms, causing false E-217 on 8.5m cables; resolved by rolling back to v4.2.0."
+  },
+  {
+    "id": "EVAL-02",
+    "category": "Hardware Warranty Schedule",
+    "question": "What are the standard warranty coverage periods for the SiC power module and the liquid-cooled charging cables in the DC-150 warranty schedule?",
+    "required_facts": [
+      "5 Years",
+      "60 Months",
+      "2 Years"
+    ],
+    "source_doc": "dc150_product_manual.md",
+    "explanation": "SiC power modules carry 5 Years (60 Months) coverage, liquid-cooled charging cables carry 2 Years (24 Months)."
+  },
+  {
+    "id": "EVAL-03",
+    "category": "Commercial Operator SLA",
+    "question": "What is the mandatory on-site emergency response time for Tier 1 highway super-hubs during critical multi-charger outages?",
+    "required_facts": [
+      "2 Hours",
+      "99.50%"
+    ],
+    "source_doc": "operator_sla_pricing.md",
+    "explanation": "Tier 1 highway super-hubs require 99.50% uptime and 2 Hours on-site emergency response for multi-unit outages."
+  },
+  {
+    "id": "EVAL-04",
+    "category": "Site Inspection & Diagnostics",
+    "question": "What was the dedicated copper earthing pit loop impedance and Gun B wear depth measured during the Pune site inspection?",
+    "required_facts": [
+      "2.14",
+      "1.8 mm"
+    ],
+    "source_doc": "site_inspection_report.pdf",
+    "explanation": "Earthing pit loop impedance measured 2.14 Ohms and Gun B wear depth measured 1.8 mm at strain relief boot."
+  },
+  {
+    "id": "EVAL-05",
+    "category": "Mechanical & Installation Specs",
+    "question": "What is the specified tightening torque in Newton-meters for the DC busbar bolts on the DC-150?",
+    "required_facts": [
+      "55 Nm",
+      "busbar"
+    ],
+    "source_doc": "technician_shift_notes.txt / dc150_product_manual.md",
+    "explanation": "DC busbar bolts must be torqued to 55 Nm per manufacturer specification."
+  },
+  {
+    "id": "EVAL-06",
+    "category": "Hardware Error Code Diagnostics",
+    "question": "What internal temperature threshold triggers error code E-104 on the DC-150, and what component is affected?",
+    "required_facts": [
+      "92",
+      "Power Module"
+    ],
+    "source_doc": "dc150_product_manual.md",
+    "explanation": "Error E-104 triggers when internal SiC heatsink temperature exceeds 92 deg C on the Power Module."
+  },
+  {
+    "id": "EVAL-07",
+    "category": "Firmware & Protocol Engineering",
+    "question": "How was the circular ring buffer capacity modified on the MCU in firmware release v4.2.0 to resolve CAN-bus packet loss?",
+    "required_facts": [
+      "64 to 256",
+      "E-214"
+    ],
+    "source_doc": "firmware_release_notes.md",
+    "explanation": "Enlarged circular ring buffer from 64 to 256 messages on MCU, eliminating E-214 CAN-bus packet loss."
+  },
+  {
+    "id": "EVAL-08",
+    "category": "SLA Claims & Governance",
+    "question": "Within how many calendar days must an operator submit a formal service credit claim following a downtime month?",
+    "required_facts": [
+      "30 calendar days",
+      "portal.amperiacharge.com"
+    ],
+    "source_doc": "operator_sla_pricing.md",
+    "explanation": "Claims must be filed within 30 calendar days via portal.amperiacharge.com."
+  },
+  {
+    "id": "EVAL-09",
+    "category": "High-Voltage Safety Baseline",
+    "question": "What is the factory-new baseline insulation resistance threshold on the DC-150, and below what field reading is immediate inspection required?",
+    "required_facts": [
+      "500",
+      "100"
+    ],
+    "source_doc": "dc150_product_manual.md",
+    "explanation": "Factory-new baseline is > 500 MOhm; readings below 100 MOhm require immediate physical inspection."
+  },
+  {
+    "id": "EVAL-10",
+    "category": "Critical Safety Faults",
+    "question": "What immediate safety action is required when the DC-150 controller triggers error code E-109 DC output contactor weld fault?",
+    "required_facts": [
+      "E-109",
+      "replace contactor"
+    ],
+    "source_doc": "dc150_product_manual.md",
+    "explanation": "E-109 is a critical safety fault requiring immediate de-energization and contactor assembly replacement."
+  },
+  {
+    "id": "EVAL-11",
+    "category": "Commercial Penalties & Credits",
+    "question": "What service credit refund percentage is granted to a host if monthly uptime at a Tier 1 highway site drops below 95.00%?",
+    "required_facts": [
+      "50% Service Credit",
+      "subscription dues"
+    ],
+    "source_doc": "operator_sla_pricing.md",
+    "explanation": "Tier 1 monthly uptime below 95.00% triggers a 50% Service Credit refund plus waiver of subscription dues."
+  },
+  {
+    "id": "EVAL-12",
+    "category": "Field Spares Reconciliation",
+    "question": "Where were the unused spare contactors and power module returned after the Pune Expressway incident, and what happened to the RMA request?",
+    "required_facts": [
+      "bin B-12",
+      "cancelled"
+    ],
+    "source_doc": "technician_shift_notes.txt / incident_postmortem.md",
+    "explanation": "Unused parts were returned to depot bin B-12 and the emergency RMA request was formally cancelled."
+  }
+]

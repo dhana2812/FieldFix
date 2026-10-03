@@ -1,0 +1,25 @@
+=== AMPERIA REGIONAL FIELD TECH LOGS - WEST ZONE (PUNE/MUMBAI CORRIDOR) ===
+Technician ID: Tech-414 (Rajesh Kumar) / Shift: Night Emergency Roster
+
+[2026-05-18 23:45 IST] - DISPATCH CALL
+got alert from NOC. Pune expway superhub MH-PUN-EXP-04 3x dc-150 units down. all showing err E-217. tier 1 site so 2hr sla clock ticking. grabbing toolbox + 2 spare contactors + spare pwr mod from depot inventory just in case.
+
+[2026-05-19 01:20 IST] - SITE ARRIVAL & FIRST CHECK
+reached site. heavy rain. all 3 chargers (dc150-01, dc150-02, dc150-03) yellow ring flashing. screen says "Error E-217 Precharge Fault".
+opened cabinet door dc150-01. checked 24v aux power rail - 24.1V ok. 
+checked pwr mod status leds: all 3 50kw modules green leds solid. no smoke or heat smell.
+measured dc busbar torque - tight at 55 Nm as per manual spec.
+almost swapped out the main dc contactor assembly thinking coil stuck, but saw fw version on hmi screen is 4.3.0 build 4314. 
+remembered bangalore depot tech had same issue with v4.3 fw timing timeout on long cables.
+
+[2026-05-19 02:10 IST] - FIRMWARE ROLLBACK & TEST
+plugged in amperia tool v2.1 usb key into mcu service port.
+rolled back fw from v4.3.0 to v4.2.0 build 4208 on all 3 units (dc150-01, dc150-02, dc150-03).
+rebooted mcus. took ~8 mins per cabinet.
+hooked up test nexon ev on gun A dc150-01. session started immediately! precharge handshake clicked in 600ms, no E-217 err! ramped up to 148kw clean.
+tested dc150-02 and dc150-03 with tiago ev. both working fine 100%.
+
+[2026-05-19 03:00 IST] - WRAPUP & PARTS RETURN
+no hardware replaced. returned 2 contactors and pwr mod back to depot bin B-12. cancelled rma request.
+note: pune site has 8.5m extra long liquid cooled cables so fw 4.3 420ms timeout is too short for cable capacitance. do NOT update to 4.3 until amperia releases v4.4 patch.
+applied dielectric grease to ccs2 pins on unit 03 gun B. closed cabinet doors. site fully green.

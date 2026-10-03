@@ -1,0 +1,14 @@
+Question ID,Category,Total Facts,BM25 @3,BM25 @5,Vector @3,Vector @5,Hybrid @3,Hybrid @5,Re-rank @3,Re-rank @5
+EVAL-01,Incident Root Cause Analysis,3,2/3,3/3,3/3,3/3,3/3,3/3,3/3,3/3
+EVAL-02,Hardware Warranty Schedule,3,3/3,3/3,3/3,3/3,3/3,3/3,3/3,3/3
+EVAL-03,Commercial Operator SLA,2,2/2,2/2,2/2,2/2,2/2,2/2,2/2,2/2
+EVAL-04,Site Inspection & Diagnostics,2,2/2,2/2,2/2,2/2,2/2,2/2,2/2,2/2
+EVAL-05,Mechanical & Installation Specs,2,2/2,2/2,0/2,1/2,1/2,1/2,2/2,2/2
+EVAL-06,Hardware Error Code Diagnostics,2,2/2,2/2,2/2,2/2,2/2,2/2,2/2,2/2
+EVAL-07,Firmware & Protocol Engineering,2,2/2,2/2,2/2,2/2,2/2,2/2,2/2,2/2
+EVAL-08,SLA Claims & Governance,2,2/2,2/2,2/2,2/2,2/2,2/2,2/2,2/2
+EVAL-09,High-Voltage Safety Baseline,2,2/2,2/2,2/2,2/2,2/2,2/2,2/2,2/2
+EVAL-10,Critical Safety Faults,2,2/2,2/2,2/2,2/2,2/2,2/2,2/2,2/2
+EVAL-11,Commercial Penalties & Credits,2,2/2,2/2,2/2,2/2,2/2,2/2,2/2,2/2
+EVAL-12,Field Spares Reconciliation,2,2/2,2/2,2/2,2/2,2/2,2/2,2/2,2/2
+TOTALS,Aggregate Fact Recall,26,25/26 (96.2%),26/26 (100.0%),24/26 (92.3%),25/26 (96.2%),25/26 (96.2%),25/26 (96.2%),26/26 (100.0%),26/26 (100.0%)
