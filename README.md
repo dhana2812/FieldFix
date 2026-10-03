@@ -25,7 +25,7 @@ FieldFix runs from a clean repository clone on Windows, macOS, or Linux using st
 ### 1. Prerequisites & Environment Setup
 ```powershell
 # Clone the repository
-git clone <YOUR_REPO_URL>
+git clone https://github.com/dhana2812/FieldFix.git
 cd FieldFix
 
 # Create and activate virtual environment
