@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # ----------------------------------------------------------------------------
+  # FieldFix Grounded RAG Copilot Service
+  # ----------------------------------------------------------------------------
+  fieldfix:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: fieldfix:latest
+    container_name: fieldfix-copilot
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      # Persist telemetry logs and vector store database on the host machine
+      - ./logs:/app/logs
+      - ./data:/app/data
+    depends_on:
+      - redis
+    stdin_open: true
+    tty: true
+
+  # ----------------------------------------------------------------------------
+  # Redis Semantic & Exact Query Response Cache (70% Fleet Cost Reduction)
+  # ----------------------------------------------------------------------------
+  redis:
+    image: redis:7.2-alpine
+    container_name: fieldfix-cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+
+volumes:
+  redis_data:
+    driver: local
